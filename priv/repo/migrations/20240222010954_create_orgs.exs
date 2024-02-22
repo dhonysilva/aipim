@@ -1,4 +1,4 @@
-# mix phx.gen.context Accounts Org orgs name:string slug:string
+# mix phx.gen.html Accounts Org orgs name:string slug:string
 
 defmodule Aipim.Repo.Migrations.CreateOrgs do
   use Ecto.Migration

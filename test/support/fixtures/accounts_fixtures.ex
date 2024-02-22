@@ -17,4 +17,19 @@ defmodule Aipim.AccountsFixtures do
 
     org
   end
+
+  @doc """
+  Generate a org.
+  """
+  def org_fixture(attrs \\ %{}) do
+    {:ok, org} =
+      attrs
+      |> Enum.into(%{
+        name: "some name",
+        slug: "some slug"
+      })
+      |> Aipim.Accounts.create_org()
+
+    org
+  end
 end

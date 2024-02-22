@@ -18,6 +18,8 @@ defmodule AipimWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    resources "/orgs", OrgController
   end
 
   # Other scopes may use custom stacks.
