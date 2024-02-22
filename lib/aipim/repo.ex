@@ -23,6 +23,6 @@ defmodule Aipim.Repo do
 
   @impl true
   def default_options(_operation) do
-    [org_id: Accounts.get_org_id()]
+    [org_id: Organizations.get_org_id()]
   end
 end

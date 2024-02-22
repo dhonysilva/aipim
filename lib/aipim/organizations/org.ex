@@ -1,4 +1,4 @@
-defmodule Aipim.Accounts.Org do
+defmodule Aipim.Organizations.Org do
   use Ecto.Schema
   import Ecto.Changeset
 
