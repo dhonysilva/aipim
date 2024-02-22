@@ -1,12 +1,22 @@
-defmodule Aipim.Accounts do
+defmodule Aipim.Organizations do
   @moduledoc """
-  The Accounts context.
+  The Organizations context.
   """
 
   import Ecto.Query, warn: false
   alias Aipim.Repo
 
-  alias Aipim.Accounts.Org
+  alias Aipim.Organizations.Org
+
+  @tenant_key {__MODULE__, :org_id}
+
+  def put_org_id(org_id) do
+    Process.put(@tenant_key, org_id)
+  end
+
+  def get_org_id() do
+    Process.get(@tenant_key)
+  end
 
   @doc """
   Returns the list of orgs.

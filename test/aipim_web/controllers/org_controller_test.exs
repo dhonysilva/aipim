@@ -1,7 +1,7 @@
 defmodule AipimWeb.OrgControllerTest do
   use AipimWeb.ConnCase
 
-  import Aipim.AccountsFixtures
+  import Aipim.OrganizationsFixtures
 
   @create_attrs %{name: "some name", slug: "some slug"}
   @update_attrs %{name: "some updated name", slug: "some updated slug"}

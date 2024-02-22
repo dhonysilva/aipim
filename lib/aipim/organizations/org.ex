@@ -16,6 +16,7 @@ defmodule Aipim.Accounts.Org do
 
   # https://hexdocs.pm/phoenix/Phoenix.Param.html
   # https://hexdocs.pm/elixir/1.14/Protocol.html
+  # https://hexdocs.pm/phoenix/1.3.0-rc.2/custom_primary_key.html
   # https://blog.appsignal.com/2023/12/05/advanced-multi-tenancy-for-elixir-applications-using-ecto.html
 
   @derive {Phoenix.Param, key: :org_id}

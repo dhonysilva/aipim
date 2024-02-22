@@ -1,21 +1,21 @@
 defmodule AipimWeb.OrgController do
   use AipimWeb, :controller
 
-  alias Aipim.Accounts
-  alias Aipim.Accounts.Org
+  alias Aipim.Organizations
+  alias Aipim.Organizations.Org
 
   def index(conn, _params) do
-    orgs = Accounts.list_orgs()
+    orgs = Organizations.list_orgs()
     render(conn, :index, orgs: orgs)
   end
 
   def new(conn, _params) do
-    changeset = Accounts.change_org(%Org{})
+    changeset = Organizations.change_org(%Org{})
     render(conn, :new, changeset: changeset)
   end
 
   def create(conn, %{"org" => org_params}) do
-    case Accounts.create_org(org_params) do
+    case Organizations.create_org(org_params) do
       {:ok, org} ->
         conn
         |> put_flash(:info, "Org created successfully.")
@@ -27,20 +27,20 @@ defmodule AipimWeb.OrgController do
   end
 
   def show(conn, %{"id" => id}) do
-    org = Accounts.get_org!(id)
+    org = Organizations.get_org!(id)
     render(conn, :show, org: org)
   end
 
   def edit(conn, %{"id" => id}) do
-    org = Accounts.get_org!(id)
-    changeset = Accounts.change_org(org)
+    org = Organizations.get_org!(id)
+    changeset = Organizations.change_org(org)
     render(conn, :edit, org: org, changeset: changeset)
   end
 
   def update(conn, %{"id" => id, "org" => org_params}) do
-    org = Accounts.get_org!(id)
+    org = Organizations.get_org!(id)
 
-    case Accounts.update_org(org, org_params) do
+    case Organizations.update_org(org, org_params) do
       {:ok, org} ->
         conn
         |> put_flash(:info, "Org updated successfully.")
@@ -52,8 +52,8 @@ defmodule AipimWeb.OrgController do
   end
 
   def delete(conn, %{"id" => id}) do
-    org = Accounts.get_org!(id)
-    {:ok, _org} = Accounts.delete_org(org)
+    org = Organizations.get_org!(id)
+    {:ok, _org} = Organizations.delete_org(org)
 
     conn
     |> put_flash(:info, "Org deleted successfully.")
