@@ -17,8 +17,8 @@ defmodule Aipim.Links do
       [%Link{}, ...]
 
   """
-  def list_links do
-    Repo.all(Link)
+  def list_links(options \\ []) do
+    Repo.all(Link, options)
   end
 
   @doc """
@@ -49,10 +49,10 @@ defmodule Aipim.Links do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_link(attrs \\ %{}) do
+  def create_link(attrs \\ %{}, opts \\ []) do
     %Link{}
-    |> Link.changeset(attrs)
-    |> Repo.insert()
+    |> Link.changeset(attrs, opts)
+    |> Repo.insert(opts)
   end
 
   @doc """

@@ -20,7 +20,6 @@ defmodule AipimWeb.Router do
     get "/", PageController, :home
 
     resources "/orgs", OrgController
-
     resources "/links", LinkController
   end
 

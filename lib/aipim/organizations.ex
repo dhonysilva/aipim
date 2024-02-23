@@ -3,6 +3,7 @@ defmodule Aipim.Organizations do
   The Organizations context.
   """
 
+  import Ecto.Changeset
   import Ecto.Query, warn: false
   alias Aipim.Repo
 
@@ -27,8 +28,8 @@ defmodule Aipim.Organizations do
       [%Org{}, ...]
 
   """
-  def list_orgs do
-    Repo.all(Org)
+  def list_orgs(opts \\ []) do
+    Repo.all(Org, opts)
   end
 
   @doc """
@@ -59,10 +60,10 @@ defmodule Aipim.Organizations do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_org(attrs \\ %{}) do
+  def create_org(attrs \\ %{}, opts \\ []) do
     %Org{}
     |> Org.changeset(attrs)
-    |> Repo.insert()
+    |> Repo.insert(opts)
   end
 
   @doc """
@@ -110,5 +111,16 @@ defmodule Aipim.Organizations do
   """
   def change_org(%Org{} = org, attrs \\ %{}) do
     Org.changeset(org, attrs)
+  end
+
+  def common_changeset(schema, _attrs, opts \\ []) do
+    schema
+    |> put_org_id(get_org_id() || opts[:org_id])
+  end
+
+  defp put_org_id(changeset, nil), do: changeset
+
+  defp put_org_id(changeset, org_id) do
+    put_change(changeset, :org_id, org_id)
   end
 end
