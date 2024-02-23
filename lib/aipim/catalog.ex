@@ -104,7 +104,7 @@ defmodule Aipim.Catalog do
 
   def inc_page_views(%Product{} = product) do
     {1, [%Product{views: views}]} =
-      from(p in product, where: p.id == ^product.id, select: [:views])
+      from(p in Product, where: p.id == ^product.id, select: [:views])
       |> Repo.update_all(inc: [views: 1])
 
     put_in(product.views, views)
