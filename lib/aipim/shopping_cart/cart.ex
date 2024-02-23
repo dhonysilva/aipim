@@ -3,7 +3,7 @@ defmodule Aipim.ShoppingCart.Cart do
   import Ecto.Changeset
 
   schema "carts" do
-    belongs_to :user_id, Aipim.Accounts.User
+    belongs_to :user, Aipim.Accounts.User
 
     has_many :items, Aipim.ShoppingCart.CartItem
 

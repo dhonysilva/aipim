@@ -1,0 +1,9 @@
+defmodule AipimWeb.CartHTML do
+  use AipimWeb, :html
+
+  alias Aipim.ShoppingCart
+
+  embed_templates "cart_html/*"
+
+  def currency_to_str(%Decimal{} = val), do: "$#{Decimal.round(val, 2)}"
+end
