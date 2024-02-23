@@ -5,6 +5,8 @@ defmodule Aipim.ShoppingCart.Cart do
   schema "carts" do
     field :user_uuid, Ecto.UUID
 
+    has_many :items, Aipim.ShoppingCart.CartItem
+
     timestamps(type: :utc_datetime)
   end
 
