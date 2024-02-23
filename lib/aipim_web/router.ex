@@ -21,6 +21,8 @@ defmodule AipimWeb.Router do
 
     resources "/orgs", OrgController
     resources "/links", LinkController
+
+    resources "/products", ProductController
   end
 
   # Other scopes may use custom stacks.
