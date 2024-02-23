@@ -7,6 +7,7 @@ defmodule Aipim.Catalog do
   alias Aipim.Repo
 
   alias Aipim.Catalog.Product
+  alias Aipim.Catalog.Category
 
   @doc """
   Returns the list of products.
@@ -35,7 +36,12 @@ defmodule Aipim.Catalog do
       ** (Ecto.NoResultsError)
 
   """
-  def get_product!(id), do: Repo.get!(Product, id)
+
+  # We added Repo.preload to preload our categories when we fetch a product.
+  # This will allow us to reference product.categories in our controllers, templates, and anywhere else we want to make use of category information.
+  def get_product!(id) do
+    Product |> Repo.get!(id) |> Repo.preload(:categories)
+  end
 
   @doc """
   Creates a product.
@@ -49,9 +55,14 @@ defmodule Aipim.Catalog do
       {:error, %Ecto.Changeset{}}
 
   """
+
+  # we modified our create_product and update_product functions to call into our existing change_product function to produce a changeset.
+  # Within change_product we added a lookup to find all categories if the "category_ids" attribute is present.
+  # Then we preloaded categories and called Ecto.Changeset.put_assoc to place the fetched categories into the changeset.
+
   def create_product(attrs \\ %{}) do
     %Product{}
-    |> Product.changeset(attrs)
+    |> change_product(attrs)
     |> Repo.insert()
   end
 
@@ -69,7 +80,7 @@ defmodule Aipim.Catalog do
   """
   def update_product(%Product{} = product, attrs) do
     product
-    |> Product.changeset(attrs)
+    |> change_product(attrs)
     |> Repo.update()
   end
 
@@ -98,8 +109,27 @@ defmodule Aipim.Catalog do
       %Ecto.Changeset{data: %Product{}}
 
   """
+
+  # Within change_product we added a lookup to find all categories if the "category_ids" attribute is present.
+  # Then we preloaded categories and called Ecto.Changeset.put_assoc to place the fetched categories into the changeset.
+
+  # Now our create_product and update_product functions receive a changeset
+  # with the category associations all ready to go once we attempt an insert or update against our repo.
+
   def change_product(%Product{} = product, attrs \\ %{}) do
-    Product.changeset(product, attrs)
+    categories =
+      list_categories_by_id(attrs["category_ids"])
+
+    product
+    |> Repo.preload(:categories)
+    |> Product.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:categories, categories)
+  end
+
+  def list_categories_by_id(nil), do: []
+
+  def list_categories_by_id(category_ids) do
+    Repo.all(from c in Category, where: c.id in ^category_ids)
   end
 
   def inc_page_views(%Product{} = product) do
@@ -109,8 +139,6 @@ defmodule Aipim.Catalog do
 
     put_in(product.views, views)
   end
-
-  alias Aipim.Catalog.Category
 
   @doc """
   Returns the list of categories.
