@@ -11,6 +11,21 @@ defmodule AipimWeb.Router do
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :fetch_current_user
+    plug :fetch_current_cart
+  end
+
+  alias Aipim.ShoppingCart
+
+  defp fetch_current_cart(conn, _opts) do
+    user = conn.assigns[:current_user]
+    # IO.inspect(user, label: "passando no fetch_current_cart")
+
+    if cart = ShoppingCart.get_cart_by_user_id(user) do
+      assign(conn, :cart, cart)
+    else
+      {:ok, new_cart} = ShoppingCart.create_cart(user)
+      assign(conn, :cart, new_cart)
+    end
   end
 
   pipeline :api do
@@ -28,6 +43,11 @@ defmodule AipimWeb.Router do
     resources "/products", ProductController
 
     resources "/categories", CategoryController
+
+    resources "/cart_items", CartItemController, only: [:create, :delete]
+
+    get "/cart", CartController, :show
+    put "/cart", CartController, :update
   end
 
   # Other scopes may use custom stacks.
