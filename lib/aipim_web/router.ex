@@ -17,14 +17,16 @@ defmodule AipimWeb.Router do
   alias Aipim.ShoppingCart
 
   defp fetch_current_cart(conn, _opts) do
-    user = conn.assigns[:current_user]
-    # IO.inspect(user, label: "passando no fetch_current_cart")
-
-    if cart = ShoppingCart.get_cart_by_user_id(user) do
-      assign(conn, :cart, cart)
+    # Building the map %User{}
+    if user = conn.assigns[:current_user] do
+      if cart = ShoppingCart.get_cart_by_user_id(user.id) do
+        assign(conn, :cart, cart)
+      else
+        {:ok, new_cart} = ShoppingCart.create_cart(user.id)
+        assign(conn, :cart, new_cart)
+      end
     else
-      {:ok, new_cart} = ShoppingCart.create_cart(user)
-      assign(conn, :cart, new_cart)
+      conn
     end
   end
 
