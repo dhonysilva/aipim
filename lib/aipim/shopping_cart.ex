@@ -43,7 +43,7 @@ defmodule Aipim.ShoppingCart do
   def get_cart_by_user_id(user) do
     Repo.one(
       from(c in Cart,
-        where: c.user_id == ^user.id,
+        where: c.user_id == ^user,
         left_join: i in assoc(c, :items),
         left_join: p in assoc(i, :product),
         order_by: [asc: i.inserted_at],
@@ -64,6 +64,7 @@ defmodule Aipim.ShoppingCart do
       {:error, %Ecto.Changeset{}}
 
   """
+  # Receiveing the map %User{} as param
   def create_cart(user) do
     %Cart{user_id: user.id}
     |> Cart.changeset(%{})
@@ -141,6 +142,11 @@ defmodule Aipim.ShoppingCart do
       {:ok, %{cart: cart}} -> {:ok, cart}
       {:error, :cart, changeset, _changes_so_far} -> {:error, changeset}
     end
+  end
+
+  def prune_cart_items(%Cart{} = cart) do
+    {_, _} = Repo.delete_all(from(i in CartItem, where: i.cart_id == ^cart.id))
+    {:ok, reload_cart(cart)}
   end
 
   @doc """
