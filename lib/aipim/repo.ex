@@ -5,20 +5,20 @@ defmodule Aipim.Repo do
 
   require Ecto.Query
 
-  @impl true
-  def prepare_query(_operation, query, opts) do
-    cond do
-      opts[:skip_org_id] || opts[:schema_migration] ->
-        {query, opts}
+  # @impl true
+  # def prepare_query(_operation, query, opts) do
+  #   cond do
+  #     opts[:skip_org_id] || opts[:schema_migration] ->
+  #       {query, opts}
 
-      # org_id = opts[:org_id] ->
-      org_id = 2 ->
-        {Ecto.Query.where(query, org_id: ^org_id), opts}
+  #     # org_id = opts[:org_id] ->
+  #     org_id = 2 ->
+  #       {Ecto.Query.where(query, org_id: ^org_id), opts}
 
-      true ->
-        raise "expected org_id or skip_org_id to be set"
-    end
-  end
+  #     true ->
+  #       raise "expected org_id or skip_org_id to be set"
+  #   end
+  # end
 
   @tenant_key {__MODULE__, :org_id}
 
