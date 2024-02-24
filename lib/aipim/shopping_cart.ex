@@ -66,7 +66,7 @@ defmodule Aipim.ShoppingCart do
   """
   # Receiveing the map %User{} as param
   def create_cart(user) do
-    %Cart{user_id: user.id}
+    %Cart{user_id: user}
     |> Cart.changeset(%{})
     |> Repo.insert()
     |> case do
